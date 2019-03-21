@@ -82,12 +82,12 @@ public class ResourceTest {
 	@Test
 	public void testSerialize_WithLink() throws Exception {
 		// setup
-		Resource<String> resource = new Resource<>("foo");
-		resource.add(Link.REL_FIRST, new Link("http://example.com/0000"));
-		resource.add(Link.REL_PREVIOUS, new Link("http://example.com/0009"));
-		resource.add(Link.REL_SELF, new Link("http://example.com/0010"));
-		resource.add(Link.REL_NEXT, new Link("http://example.com/0011"));
-		resource.add(Link.REL_LAST, new Link("http://example.com/9999"));
+		Resource<String> resource = new Resource<>("foo")
+			.addLink(Link.REL_FIRST, new Link("http://example.com/0000"))
+			.addLink(Link.REL_PREVIOUS, new Link("http://example.com/0009"))
+			.addLink(Link.REL_SELF, new Link("http://example.com/0010"))
+			.addLink(Link.REL_NEXT, new Link("http://example.com/0011"))
+			.addLink(Link.REL_LAST, new Link("http://example.com/9999"));
 		// exercise
 		String actual = OM.writeValueAsString(resource);
 		// verify
@@ -121,9 +121,9 @@ public class ResourceTest {
 	@Test
 	public void testDeserialize_Bean() throws Exception {
 		// setup
-		Resource<SampleBean> expected = new Resource<>(new SampleBean("aaa", "bbb"));
-		expected.embedResource("rel", "embedded-value");
-		expected.add("self", new Link("http://example.com/self"));
+		Resource<SampleBean> expected = new Resource<>(new SampleBean("aaa", "bbb"))
+			.embedResource("rel", "embedded-value")
+			.addLink("self", new Link("http://example.com/self"));
 		String json = "{"
 				+ "  'foo': 'aaa',"
 				+ "  'bar': 'bbb',"
