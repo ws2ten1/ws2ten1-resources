@@ -28,67 +28,67 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-import org.ws2ten1.chunks.Chunk;
+import org.springframework.data.domain.Page;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
 
-import org.ws2ten1.resources.ChunkedResources.ChunkMetadata;
+import org.ws2ten1.resources.PagedResources.PageMetadata;
 
 /**
- * {@link Resource} for {@link Chunk}s.
+ * {@link Resource} for {@link Page}s.
  *
  * @param <T>
  */
 @ToString
 @EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor(access = AccessLevel.PACKAGE)
-public class ChunkedResources<T>extends Resource<ChunkMetadata> {
+public class PagedResources<T>extends Resource<PageMetadata> {
 	
 	private Map<String, Collection<T>> embeddedResources;
 	
 	
 	/**
-	 * Creates a {@link ChunkedResources} instance with {@link Chunk}.
+	 * Creates a {@link PagedResources} instance with {@link Page}.
 	 *
 	 * @param key must not be {@code null}.
-	 * @param chunk The {@link Chunk}
+	 * @param page The {@link Page}
 	 * @param wrapperFunction function coverts {@code U} to {@code T}
 	 */
-	public <U> ChunkedResources(String key, Chunk<U> chunk, Function<U, T> wrapperFunction) {
-		this(key, chunk.stream().map(wrapperFunction).collect(Collectors.toList()), new ChunkMetadata(chunk));
+	public <U> PagedResources(String key, Page<U> page, Function<U, T> wrapperFunction) {
+		this(key, page.stream().map(wrapperFunction).collect(Collectors.toList()), new PageMetadata(page));
 	}
 	
 	/**
-	 * Creates a {@link ChunkedResources} instance with {@link Chunk}.
+	 * Creates a {@link PagedResources} instance with {@link Page}.
 	 *
 	 * @param key must not be {@code null}.
-	 * @param chunk The {@link Chunk}
+	 * @param page The {@link Page}
 	 */
-	public ChunkedResources(String key, Chunk<T> chunk) {
-		this(key, chunk.getContent(), new ChunkMetadata(chunk));
+	public PagedResources(String key, Page<T> page) {
+		this(key, page.getContent(), new PageMetadata(page));
 	}
 	
 	/**
-	 * Creates a {@link ChunkedResources} instance with embeddedResources collection.
+	 * Creates a {@link PagedResources} instance with embeddedResources collection.
 	 *
 	 * @param key must not be {@code null}.
 	 * @param content The contents
 	 */
-	public ChunkedResources(String key, Collection<T> content) {
-		this(key, content, new ChunkMetadata(content.size(), null));
+	public PagedResources(String key, Collection<T> content) {
+		this(key, content, new PageMetadata(content.size(), 0, content.size()));
 	}
 	
 	/**
-	 * Creates a {@link ChunkedResources} instance with iterable and metadata.
+	 * Creates a {@link PagedResources} instance with iterable and metadata.
 	 *
 	 * @param key must not be {@code null}.
 	 * @param content must not be {@code null}.
 	 * @param metadata must not be {@code null}.
 	 */
-	public ChunkedResources(String key, Collection<T> content, ChunkMetadata metadata) {
+	public PagedResources(String key, Collection<T> content, PageMetadata metadata) {
 		super(metadata);
 		if (key == null) {
 			throw new IllegalArgumentException("The key must not be null");
@@ -103,9 +103,9 @@ public class ChunkedResources<T>extends Resource<ChunkMetadata> {
 	}
 	
 	@Override
-	@JsonProperty("chunk")
+	@JsonProperty("page")
 	@JsonUnwrapped(enabled = false)
-	public ChunkMetadata getValue() {
+	public PageMetadata getValue() {
 		return super.getValue();
 	}
 	
@@ -117,7 +117,7 @@ public class ChunkedResources<T>extends Resource<ChunkMetadata> {
 	}
 	
 	@Override
-	public Resource<ChunkMetadata> embedResource(String relationship, Object resource) {
+	public Resource<PageMetadata> embedResource(String relationship, Object resource) {
 		throw new UnsupportedOperationException();
 	}
 	
@@ -129,20 +129,49 @@ public class ChunkedResources<T>extends Resource<ChunkMetadata> {
 	@EqualsAndHashCode
 	@AllArgsConstructor
 	@NoArgsConstructor(access = AccessLevel.PACKAGE)
-	public static class ChunkMetadata {
+	public static class PageMetadata {
 		
+		/** the requested size of the page */
 		@JsonProperty("size")
 		@Getter(onMethod = @__(@JsonIgnore))
 		private long size;
 		
-		@JsonProperty("pagination_token")
+		/** the total number of elements available */
+		@JsonProperty("total_elements")
 		@JsonInclude(JsonInclude.Include.NON_NULL)
 		@Getter(onMethod = @__(@JsonIgnore))
-		private String paginationToken;
+		private Long totalElements;
+		
+		/** how many pages are available in total */
+		@JsonProperty("total_pages")
+		@JsonInclude(JsonInclude.Include.NON_NULL)
+		@Getter(onMethod = @__(@JsonIgnore))
+		private Long totalPages;
+		
+		/** the number of the current page */
+		@JsonProperty("number")
+		@JsonInclude(JsonInclude.Include.NON_NULL)
+		@Getter(onMethod = @__(@JsonIgnore))
+		private Long number;
 		
 		
-		public ChunkMetadata(Chunk<?> chunk) {
-			this(chunk.getContent().size(), chunk.getPaginationToken());
+		/**
+		 * Creates a new {@link PageMetadata} from the given size, numer and total elements.
+		 *
+		 * @param size the size of the page
+		 * @param number the number of the page
+		 * @param totalElements the total number of elements available
+		 */
+		public PageMetadata(long size, long number, long totalElements) {
+			this(size, number, totalElements, size == 0 ? 0 : (long) Math.ceil((double) totalElements / (double) size));
+		}
+		
+		public PageMetadata(Page<?> page) {
+			this(
+					page.getSize(),
+					page.getTotalElements(),
+					(long) page.getTotalPages(),
+					(long) page.getNumber());
 		}
 	}
 }
