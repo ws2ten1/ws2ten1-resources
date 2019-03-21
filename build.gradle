@@ -49,10 +49,14 @@ group = 'org.ws2ten1'
 sourceCompatibility = '1.8'
 
 repositories {
+	jcenter()
 	mavenCentral()
+	maven { url 'https://dl.bintray.com/ws2ten1/maven-release' }
 }
 
 dependencies {
+	api 'org.ws2ten1:ws2ten1-chunks:1.0.0-rc7'
+	api 'org.springframework.data:spring-data-commons'
 //	implementation 'org.springframework.boot:spring-boot-starter'
 //	implementation 'org.springframework:spring-web'
 	implementation 'com.fasterxml.jackson.core:jackson-annotations'

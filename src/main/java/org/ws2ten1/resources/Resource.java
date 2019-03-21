@@ -34,15 +34,14 @@ import com.fasterxml.jackson.annotation.JsonUnwrapped;
 /**
  * Resource element in HAL.
  */
-@JsonIgnoreProperties("content")
+@JsonIgnoreProperties("embeddedResources")
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PACKAGE)
 @EqualsAndHashCode
 @ToString
 public class Resource<T> {
 	
-	@Getter
-	@JsonUnwrapped
+	@Getter(onMethod = @__(@JsonUnwrapped))
 	private T value;
 	
 	private final Map<String, Link> links = new HashMap<>();
@@ -55,12 +54,14 @@ public class Resource<T> {
 	 *
 	 * @param rel relation
 	 * @param link link
+	 * @return this
 	 */
-	public void add(String rel, Link link) {
+	public Resource<T> addLink(String rel, Link link) {
 		if (link == null) {
 			throw new IllegalArgumentException("Link must not be null!");
 		}
 		this.links.put(rel, link);
+		return this;
 	}
 	
 	/**
@@ -117,7 +118,7 @@ public class Resource<T> {
 	 */
 	@JsonInclude(Include.NON_EMPTY)
 	@JsonProperty("_embedded")
-	public Map<String, Object> getEmbeddedResources() {
+	public Map<String, ?> getEmbeddedResources() {
 		return embeddedResources;
 	}
 	
@@ -126,8 +127,10 @@ public class Resource<T> {
 	 *
 	 * @param relationship rel
 	 * @param resource embedded resource
+	 * @return this
 	 */
-	public void embedResource(String relationship, Object resource) {
+	public Resource<T> embedResource(String relationship, Object resource) {
 		embeddedResources.put(relationship, resource);
+		return this;
 	}
 }
