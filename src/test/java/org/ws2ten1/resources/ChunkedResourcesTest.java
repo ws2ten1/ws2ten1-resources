@@ -92,6 +92,24 @@ public class ChunkedResourcesTest {
 	}
 	
 	@Test
+	public void testSerialize_WithoutToken() throws Exception {
+		// setup
+		List<String> content = Arrays.asList("aaa", "bbb", "ccc");
+		Chunk<String> chunk = new ChunkImpl<>(content, null, new ChunkRequest(10));
+		ChunkedResources<String> stringsChunkResource = new ChunkedResources<>("resources", chunk);
+		// exercise
+		String actual = OM.writeValueAsString(stringsChunkResource);
+		// verify
+		log.info(actual);
+		with(actual)
+			.assertThat("$._embedded.resources[0]", is("aaa"))
+			.assertThat("$._embedded.resources[1]", is("bbb"))
+			.assertThat("$._embedded.resources[2]", is("ccc"))
+			.assertThat("$.chunk.size", is(chunk.size()))
+			.assertNotDefined("$.chunk.pagination_token");
+	}
+	
+	@Test
 	public void testDeserialize_Bean() throws Exception {
 		// setup
 		String paginationToken = ENCODER.encode("aaa", "ccc");
