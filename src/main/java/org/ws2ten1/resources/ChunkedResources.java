@@ -99,7 +99,9 @@ public class ChunkedResources<T>extends Resource<ChunkMetadata> {
 		if (metadata == null) {
 			throw new IllegalArgumentException("The metadata must not be null");
 		}
-		this.embeddedResources = Collections.singletonMap(key, content);
+		if (content.isEmpty() == false) {
+			this.embeddedResources = Collections.singletonMap(key, content);
+		}
 	}
 	
 	@Override
