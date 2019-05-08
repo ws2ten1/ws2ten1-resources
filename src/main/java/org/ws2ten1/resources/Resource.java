@@ -55,6 +55,7 @@ public class Resource<T> {
 	 * @param rel relation
 	 * @param link link
 	 * @return this
+	 * @throws UnsupportedOperationException if the add operation is not supported by this resource
 	 */
 	public Resource<T> addLink(String rel, Link link) {
 		if (link == null) {
@@ -96,6 +97,8 @@ public class Resource<T> {
 	
 	/**
 	 * Removes all {@link Link}s added to the resource so far.
+	 *
+	 * @throws UnsupportedOperationException if the clear operation is not supported by this resource
 	 */
 	public void clearLinks() {
 		this.links.clear();
@@ -128,6 +131,7 @@ public class Resource<T> {
 	 * @param relationship rel
 	 * @param resource embedded resource
 	 * @return this
+	 * @throws UnsupportedOperationException if the embed operation is not supported by this resource
 	 */
 	public Resource<T> embedResource(String relationship, Object resource) {
 		embeddedResources.put(relationship, resource);

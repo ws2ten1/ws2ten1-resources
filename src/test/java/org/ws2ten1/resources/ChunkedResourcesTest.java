@@ -21,6 +21,7 @@ import static org.hamcrest.Matchers.is;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
@@ -89,6 +90,40 @@ public class ChunkedResourcesTest {
 			.assertThat("$._embedded.beans[1].bar", is("ddd"))
 			.assertThat("$.chunk.size", is(chunk.size()))
 			.assertThat("$.chunk.pagination_token", is(chunk.getPaginationToken()));
+	}
+	
+	@Test
+	public void testSerialize_WithoutToken() throws Exception {
+		// setup
+		List<String> content = Arrays.asList("aaa", "bbb", "ccc");
+		Chunk<String> chunk = new ChunkImpl<>(content, null, new ChunkRequest(10));
+		ChunkedResources<String> stringsChunkResource = new ChunkedResources<>("resources", chunk);
+		// exercise
+		String actual = OM.writeValueAsString(stringsChunkResource);
+		// verify
+		log.info(actual);
+		with(actual)
+			.assertThat("$._embedded.resources[0]", is("aaa"))
+			.assertThat("$._embedded.resources[1]", is("bbb"))
+			.assertThat("$._embedded.resources[2]", is("ccc"))
+			.assertThat("$.chunk.size", is(chunk.size()))
+			.assertNotDefined("$.chunk.pagination_token");
+	}
+	
+	@Test
+	public void testSerialize_Empty() throws Exception {
+		// setup
+		List<String> content = Collections.emptyList();
+		Chunk<String> chunk = new ChunkImpl<>(content, null, new ChunkRequest(10));
+		ChunkedResources<String> stringsChunkResource = new ChunkedResources<>("resources", chunk);
+		// exercise
+		String actual = OM.writeValueAsString(stringsChunkResource);
+		// verify
+		log.info(actual);
+		with(actual)
+			.assertNotDefined("$._embedded.resources")
+			.assertThat("$.chunk.size", is(chunk.size()))
+			.assertNotDefined("$.chunk.pagination_token");
 	}
 	
 	@Test

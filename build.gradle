@@ -6,7 +6,7 @@ buildscript {
 	}
 	dependencies {
 		classpath "com.diffplug.spotless:spotless-plugin-gradle:$spotlessPluginVersion"
-		classpath "de.thetaphi:forbiddenapis:2.5"
+		classpath "de.thetaphi:forbiddenapis:2.6"
 		classpath "de.aaschmid:gradle-cpd-plugin:1.2"
 		classpath "gradle.plugin.com.github.spotbugs:spotbugs-gradle-plugin:$spotbugsPluginVersion"
 	}
@@ -17,6 +17,7 @@ plugins {
 	id 'org.springframework.boot' version '2.1.3.RELEASE'
 	id 'com.jfrog.bintray' version '1.8.4'
 	id 'maven-publish'
+	id 'com.github.spotbugs' version '1.6.4' apply false
 }
 
 // basic plugins
@@ -46,7 +47,14 @@ apply from: "${rootProject.projectDir}/gradle/sourceArtifact.gradle"
 apply from: "${rootProject.projectDir}/gradle/bintray.gradle"
 
 group = 'org.ws2ten1'
+
+// compiler
 sourceCompatibility = '1.8'
+
+compileJava {
+	options.compilerArgs << "-Werror"
+	options.compilerArgs << "-Xlint:all" << "-Xlint:-processing" << "-Xlint:-deprecation"
+}
 
 repositories {
 	jcenter()
@@ -61,11 +69,13 @@ dependencies {
 //	implementation 'org.springframework:spring-web'
 	implementation 'com.fasterxml.jackson.core:jackson-annotations'
 
+	// lombok
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
 	testCompileOnly 'org.projectlombok:lombok'
 	testAnnotationProcessor 'org.projectlombok:lombok'
 
+	// test
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'com.jayway.jsonpath:json-path-assert'
 	testImplementation 'com.fasterxml.jackson.core:jackson-databind'
@@ -77,4 +87,15 @@ bootJar {
 
 jar {
 	enabled = true
+}
+
+tasks.withType(com.github.spotbugs.SpotBugsTask) {
+	reports {
+		html {
+			enabled = true
+		}
+		xml {
+			enabled = false
+		}
+	}
 }
