@@ -63,10 +63,8 @@ repositories {
 }
 
 dependencies {
-	api 'org.ws2ten1:ws2ten1-chunks:1.0.0-rc7'
+	api 'org.ws2ten1:ws2ten1-chunks:1.0.0-rc9'
 	api 'org.springframework.data:spring-data-commons'
-//	implementation 'org.springframework.boot:spring-boot-starter'
-//	implementation 'org.springframework:spring-web'
 	implementation 'com.fasterxml.jackson.core:jackson-annotations'
 
 	// lombok
