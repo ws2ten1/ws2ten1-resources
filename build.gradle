@@ -63,7 +63,7 @@ repositories {
 }
 
 dependencies {
-	api 'org.ws2ten1:ws2ten1-chunks:1.0.0-rc10'
+	api 'org.ws2ten1:ws2ten1-chunks:1.0.0-rc11'
 	api 'org.springframework.data:spring-data-commons'
 	implementation 'com.fasterxml.jackson.core:jackson-annotations'
 
