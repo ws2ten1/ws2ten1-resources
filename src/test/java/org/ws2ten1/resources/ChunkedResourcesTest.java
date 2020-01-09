@@ -31,11 +31,11 @@ import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import org.junit.Test;
+import org.ws2ten1.chunkrequests.ChunkRequest;
+import org.ws2ten1.chunkrequests.PaginationTokenEncoder;
+import org.ws2ten1.chunkrequests.SimplePaginationTokenEncoder;
 import org.ws2ten1.chunks.Chunk;
 import org.ws2ten1.chunks.ChunkImpl;
-import org.ws2ten1.chunks.ChunkRequest;
-import org.ws2ten1.chunks.PaginationTokenEncoder;
-import org.ws2ten1.chunks.SimplePaginationTokenEncoder;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.type.TypeReference;
