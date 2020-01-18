@@ -6,15 +6,15 @@ buildscript {
 	}
 	dependencies {
 		classpath "com.diffplug.spotless:spotless-plugin-gradle:$spotlessPluginVersion"
-		classpath "de.thetaphi:forbiddenapis:2.7"
-		classpath "de.aaschmid:gradle-cpd-plugin:2.0"
-		classpath "gradle.plugin.com.github.spotbugs:spotbugs-gradle-plugin:$spotbugsPluginVersion"
+		classpath 'de.thetaphi:forbiddenapis:2.7'
+		classpath 'de.aaschmid:gradle-cpd-plugin:3.1'
+		classpath 'com.github.spotbugs:spotbugs-gradle-plugin:3.0.0'
 	}
 }
 
 plugins {
 	id 'java-library'
-	id 'org.springframework.boot' version '2.2.2.RELEASE'
+	id 'org.springframework.boot' version '2.2.3.RELEASE'
 	id 'com.jfrog.bintray' version '1.8.4'
 	id 'maven-publish'
 	id 'com.github.spotbugs' version '3.0.0' apply false

@@ -163,7 +163,8 @@ public class PagedResources<T>extends Resource<PageMetadata> {
 		 * @param totalElements the total number of elements available
 		 */
 		public PageMetadata(long size, long number, long totalElements) {
-			this(size, number, totalElements, size == 0 ? 0 : (long) Math.ceil((double) totalElements / (double) size));
+			this(size, number, totalElements, size == 0 ? 0
+					: (long) Math.ceil((double) totalElements / (double) size));
 		}
 		
 		public PageMetadata(Page<?> page) {
