@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.ws2ten1.resources;
+package org.polycreo.resources;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -28,14 +28,14 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-import org.ws2ten1.chunks.Chunk;
+import org.polycreo.chunks.Chunk;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
 
-import org.ws2ten1.resources.ChunkedResources.ChunkMetadata;
+import org.polycreo.resources.ChunkedResources.ChunkMetadata;
 
 /**
  * {@link Resource} for {@link Chunk}s.

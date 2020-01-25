@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.ws2ten1.resources;
+package org.polycreo.resources;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -35,7 +35,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
 
-import org.ws2ten1.resources.PagedResources.PageMetadata;
+import org.polycreo.resources.PagedResources.PageMetadata;
 
 /**
  * {@link Resource} for {@link Page}s.

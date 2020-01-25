@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.ws2ten1.resources;
+package org.polycreo.resources;
 
 import static com.jayway.jsonassert.JsonAssert.with;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -31,11 +31,11 @@ import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import org.junit.Test;
-import org.ws2ten1.chunkrequests.ChunkRequest;
-import org.ws2ten1.chunkrequests.PaginationTokenEncoder;
-import org.ws2ten1.chunkrequests.SimplePaginationTokenEncoder;
-import org.ws2ten1.chunks.Chunk;
-import org.ws2ten1.chunks.ChunkImpl;
+import org.polycreo.chunkrequests.ChunkRequest;
+import org.polycreo.chunkrequests.PaginationTokenEncoder;
+import org.polycreo.chunkrequests.SimplePaginationTokenEncoder;
+import org.polycreo.chunks.Chunk;
+import org.polycreo.chunks.ChunkImpl;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.type.TypeReference;

@@ -46,7 +46,7 @@ apply from: "${rootProject.projectDir}/gradle/version.gradle"
 apply from: "${rootProject.projectDir}/gradle/sourceArtifact.gradle"
 apply from: "${rootProject.projectDir}/gradle/bintray.gradle"
 
-group = 'org.ws2ten1'
+group = 'org.polycreo'
 
 // compiler
 sourceCompatibility = '1.8'
@@ -59,11 +59,11 @@ compileJava {
 repositories {
 	jcenter()
 	mavenCentral()
-	maven { url 'https://dl.bintray.com/ws2ten1/maven-release' }
+	maven { url 'https://dl.bintray.com/polycreo/maven' }
 }
 
 dependencies {
-	api 'org.ws2ten1:ws2ten1-chunks:1.0.0-rc15'
+	api 'org.polycreo:polycreo-chunks:1.0.0-rc15'
 	api 'org.springframework.data:spring-data-commons'
 	implementation 'com.fasterxml.jackson.core:jackson-annotations'
 
